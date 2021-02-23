@@ -11,3 +11,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+footer{
+  color: white;
+  background-color: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+footer div+div{
+  margin-left: 50px;
+}
+footer .logo-rss{
+  background-color: #fff;
+  padding: 3px;
+  border-radius: 3px;
+}
+footer a{
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.5em;
+}

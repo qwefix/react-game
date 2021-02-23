@@ -1,6 +1,8 @@
 
 function App() {
-  return 
+  return (
+    'hi'
+  )
 }
 
 export default App;
