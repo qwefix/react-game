@@ -12,6 +12,11 @@ code {
     monospace;
 }
 
+canvas {
+  border: 1px solid black;
+}
+
+
 footer{
   color: white;
   background-color: #111;

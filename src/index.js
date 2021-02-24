@@ -5,10 +5,10 @@ import App from './App';
 import Footer from './Footer'
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <App />
-    <Footer/>
-  </React.StrictMode>,
+    <Footer />
+  </React.Fragment>,
   document.getElementById('root')
 );
 
