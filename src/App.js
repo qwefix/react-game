@@ -33,7 +33,6 @@ function App() {
   };
 
   function moveSnake(e) {
-    console.log(lastDir, DIRECTIONS[e.keyCode])
     if (e.keyCode >= 37 && e.keyCode <= 40) {
       if (!(lastDir[0] == -DIRECTIONS[e.keyCode][0] && lastDir[1] == -DIRECTIONS[e.keyCode][1])) {
         setDir(DIRECTIONS[e.keyCode]);
@@ -41,10 +40,21 @@ function App() {
       e.preventDefault();
     }
   };
-
-  function createApple() {
-
+  function random(n) {
+    return Math.floor(Math.random() * n)
+  }
+  // BUG HERE!!!!!!!!!!!
+  function createApple(head, snake) {
+    let fullsnake = snake.slice();
+    fullsnake.push(head)
+    let res = [random(CANVAS_SIZE), random(CANVAS_SIZE)];
+    console.log(fullsnake.findIndex(([x, y]) => x == res[0] && y == res[0]) > 0)
+    if (fullsnake.findIndex(([x, y]) => x == res[0] && y == res[0]) > 0) {
+      return createApple(head, snake);
+    };
+    return (res)
   };
+  // BUG HERE!!!!!!!!!!!
   function checkHitWalls(piece) {
     return (
       piece[0] >= CANVAS_SIZE || piece[0] < 0 ||
@@ -65,7 +75,8 @@ function App() {
     if (checkHitWalls(snakeNewHead, snakeCopy)) { endGame(); return };
 
     if (checkAppleHit(snakeNewHead)) {
-      createApple(snakeNewHead, snakeCopy)
+      setApple(createApple(snakeNewHead, snakeCopy));
+      setSpeed(Math.ceil(speed * 0.98));
     } else {
       snakeCopy.pop();
     };
@@ -74,7 +85,6 @@ function App() {
     snakeCopy.unshift(snakeNewHead);
     setSnake(snakeCopy);
     setLastDir(JSON.parse(JSON.stringify(dir)));
-
   }
 
   useEffect(() => {
@@ -84,7 +94,7 @@ function App() {
     context.fillStyle = 'green';
     snake.forEach(([x, y]) => context.fillRect(x, y, 1, 1));
     context.fillStyle = 'red';
-    context.fillRect(apple[0], apple[1], 1, 1)
+    context.fillRect(apple[0], apple[1], 1, 1);
   }, [snake, apple, gameOver]);
 
 
