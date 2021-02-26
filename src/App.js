@@ -9,6 +9,16 @@ import {
   DIRECTIONS,
 } from './constants';
 
+import gameoverSound from './sounds/gameover.wav';
+import newAppleSound from './sounds/newApple.wav';
+import music from './sounds/music.mp3';
+
+
+const audioGameOver = new Audio(gameoverSound);
+const audioNewApple = new Audio(newAppleSound);
+const audioMusic = new Audio(music);
+
+
 function App() {
   const [lastDir, setLastDir] = useState([0, 0]);
   const canvasRef = useRef();
@@ -20,6 +30,8 @@ function App() {
 
 
   function startGame() {
+    audioMusic.currentTime = 0;
+    audioMusic.play()
     setSnake(SNAKE_START);
     setApple(APPLE_START);
     setDir([0, -1]);
@@ -28,6 +40,9 @@ function App() {
   };
 
   function endGame() {
+    audioGameOver.currentTime = 0;
+    audioGameOver.play();
+    audioMusic.pause();
     setSpeed(null);
     setGameOver(true);
   };
@@ -74,6 +89,8 @@ function App() {
     if (checkHitWalls(snakeNewHead, snakeCopy)) { endGame(); return };
 
     if (checkAppleHit(snakeNewHead)) {
+      audioNewApple.currentTime = 0;
+      audioNewApple.play()
       setApple(createApple(snakeNewHead, snakeCopy));
       setSpeed(Math.ceil(speed * 0.98));
     } else {
@@ -108,7 +125,9 @@ function App() {
       />
       { gameOver && <div id='gameover'>Game Over</div>}
       <button onClick={startGame} className='start-btn'>START<br />(R)</button>
+
     </div >
+
   )
 }
 
