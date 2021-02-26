@@ -30,7 +30,11 @@ canvas {
   width: max-content;
 }
 #gameover{
-  background-color: rgba(255, 0, 0, 0.397);
+  font-size: 3em;
+  background-color: rgba(255, 0, 0);
+  padding: 1.5em;
+  border: 3px solid black;
+  border-radius: 10px;
   color: white;
   position: absolute;
 }
@@ -56,4 +60,15 @@ footer a{
   text-decoration: none;
   font-weight: 700;
   font-size: 1.5em;
+}
+button{
+  background-color: grey;
+  color: white;
+  font-weight: 650;
+  padding: 5px;
+}
+.start-btn{
+  position: absolute;
+  top: 20%;
+  right: 5%;
 }

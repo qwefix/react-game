@@ -16,7 +16,7 @@ function App() {
   const [apple, setApple] = useState(APPLE_START);
   const [dir, setDir] = useState([0, -1]);
   const [speed, setSpeed] = useState(null);
-  const [gameOver, setGameOver] = useState(false);
+  const [gameOver, setGameOver] = useState(true);
 
 
   function startGame() {
@@ -43,18 +43,17 @@ function App() {
   function random(n) {
     return Math.floor(Math.random() * n)
   }
-  // BUG HERE!!!!!!!!!!!
+
   function createApple(head, snake) {
     let fullsnake = snake.slice();
-    fullsnake.push(head)
+    fullsnake.push(head);
     let res = [random(CANVAS_SIZE), random(CANVAS_SIZE)];
-    console.log(fullsnake.findIndex(([x, y]) => x == res[0] && y == res[0]) > 0)
-    if (fullsnake.findIndex(([x, y]) => x == res[0] && y == res[0]) > 0) {
-      return createApple(head, snake);
+    while (fullsnake.findIndex(([x, y]) => x == res[0] && y == res[1]) >= 0) {
+      res = [random(CANVAS_SIZE), random(CANVAS_SIZE)];
     };
     return (res)
   };
-  // BUG HERE!!!!!!!!!!!
+
   function checkHitWalls(piece) {
     return (
       piece[0] >= CANVAS_SIZE || piece[0] < 0 ||
@@ -108,7 +107,7 @@ function App() {
         height={`${CANVAS_SIZE * SCALE}px`}
       />
       { gameOver && <div id='gameover'>Game Over</div>}
-      <button onClick={startGame}>start</button>
+      <button onClick={startGame} className='start-btn'>START<br />(R)</button>
     </div >
   )
 }
