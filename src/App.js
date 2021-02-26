@@ -17,6 +17,7 @@ import music from './sounds/music.mp3';
 const audioGameOver = new Audio(gameoverSound);
 const audioNewApple = new Audio(newAppleSound);
 const audioMusic = new Audio(music);
+audioMusic.loop = true;
 
 
 function App() {
@@ -38,7 +39,10 @@ function App() {
     setSpeed(SPEED);
     setGameOver(false);
   };
-
+  function pauseGame() {
+    window.saveSpeed = speed;
+    setSpeed(null);
+  }
   function endGame() {
     audioGameOver.currentTime = 0;
     audioGameOver.play();
@@ -46,13 +50,16 @@ function App() {
     setSpeed(null);
     setGameOver(true);
   };
-
-  function moveSnake(e) {
+  function keysHandler(e) {
+    e.preventDefault();
     if (e.keyCode >= 37 && e.keyCode <= 40) {
-      if (!(lastDir[0] == -DIRECTIONS[e.keyCode][0] && lastDir[1] == -DIRECTIONS[e.keyCode][1])) {
-        setDir(DIRECTIONS[e.keyCode]);
-      }
-      e.preventDefault();
+      moveSnake(e.keyCode)
+    };
+  }
+  function moveSnake(key) {
+    console.log(`direction ${dir}  lastDirection  ${lastDir}`)
+    if (!(lastDir[0] == -DIRECTIONS[key][0] && lastDir[1] == -DIRECTIONS[key][1])) {
+      setDir(DIRECTIONS[key]);
     }
   };
   function random(n) {
@@ -92,7 +99,7 @@ function App() {
       audioNewApple.currentTime = 0;
       audioNewApple.play()
       setApple(createApple(snakeNewHead, snakeCopy));
-      setSpeed(Math.ceil(speed * 0.98));
+      setSpeed(Math.ceil(speed * 0.95));
     } else {
       snakeCopy.pop();
     };
@@ -100,7 +107,7 @@ function App() {
 
     snakeCopy.unshift(snakeNewHead);
     setSnake(snakeCopy);
-    setLastDir(JSON.parse(JSON.stringify(dir)));
+    setLastDir([dir[0], dir[1]]);
   }
 
   useEffect(() => {
@@ -111,13 +118,12 @@ function App() {
     snake.forEach(([x, y]) => context.fillRect(x, y, 1, 1));
     context.fillStyle = 'red';
     context.fillRect(apple[0], apple[1], 1, 1);
-  }, [snake, apple, gameOver]);
-
+  }, [snake, apple, gameOver,]);
 
   useInterval(gameLoop, speed);
 
   return (
-    <div id='app' onKeyDown={moveSnake}>
+    <div id='app' onKeyDown={keysHandler}>
       <canvas
         ref={canvasRef}
         width={`${CANVAS_SIZE * SCALE}px`}
@@ -125,7 +131,6 @@ function App() {
       />
       { gameOver && <div id='gameover'>Game Over</div>}
       <button onClick={startGame} className='start-btn'>START<br />(R)</button>
-
     </div >
 
   )
